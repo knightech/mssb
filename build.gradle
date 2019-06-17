@@ -9,10 +9,7 @@ repositories {
 }
 
 dependencies {
-    ['atlas', 'prometheus', 'datadog', 'ganglia', 'graphite', 'jmx', 'influx', 'statsd', 'new-relic', 'signalfx'].each { sys ->
-        compile "io.micrometer:micrometer-registry-$sys:1.0.5"
-    }
-
+    compile "io.micrometer:micrometer-registry-prometheus:1.0.5"
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     compile 'com.netflix.hystrix:hystrix-javanica:1.5.8'

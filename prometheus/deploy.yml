@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus-deployment
+  labels:
+    app: prometheus
+    purpose: example
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: prometheus
+      purpose: example
+  template:
+    metadata:
+      labels:
+        app: prometheus
+        purpose: example
+    spec:
+      containers:
+      - name: prometheus-example
+        image: dev-prom:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 9090
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: prometheus-example-service
+  labels:
+    purpose: example
+spec:
+  selector:
+    app: prometheus
+    purpose: example
+  ports:
+  - name: promui
+    protocol: TCP
+    nodePort: 30300
+    port: 9090
+    targetPort: 9090
+  type: NodePort

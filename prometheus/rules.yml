@@ -1,0 +1,18 @@
+groups:
+- name: kubernetes
+  rules:
+
+    - alert: TooManyErrors
+      expr: sum by (deployment, namespace)(increase(application_responses{status=~"5.."}[1m])) / sum by (deployment, namespace)(increase(application_responses[1m])) * 100 > 1
+      for: 5m
+      labels:
+        severity: major
+        deployment: '{{ $labels.deployment }}'
+        namespace: '{{ $labels.namespace }}'
+      annotations:
+        summary: '500 error ratio is `{{ $value }}%`'
+        description: |-
+          Over a minute {{ $value }}% of responses were 500s.
+          This alert fires when the value is > 1% for 5m.
+          Namespace: `{{ $labels.namespace }}`
+          Deployment: `{{ $labels.deployment }}`
